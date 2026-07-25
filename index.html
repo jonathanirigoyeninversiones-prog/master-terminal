@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Master Terminal - Cripto & Quant Growth NYSE</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* Fondo Negro Absoluto Institucional */
+            color: #eaecef;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        header {
+            text-align: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #2b313a;
+            margin-bottom: 12px;
+        }
+        header h1 {
+            font-size: 1.3rem;
+            color: #f0b90b;
+            letter-spacing: 0.5px;
+        }
+        header p {
+            font-size: 0.78rem;
+            color: #848e9c;
+            margin-top: 4px;
+        }
+        /* NAVEGACIÓN PRINCIPAL (CRIPTO / ACCIONES) */
+        .main-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .main-tab-btn {
+            flex: 1;
+            background: #181a20;
+            color: #848e9c;
+            border: 1px solid #2b313a;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .main-tab-btn.active {
+            background: #f0b90b;
+            color: #000;
+            border-color: #f0b90b;
+        }
+        /* SUB-NAVEGACIÓN */
+        .sub-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .sub-btn {
+            flex: 1;
+            background: #1e2329;
+            color: #eaecef;
+            border: 1px solid #2b313a;
+            padding: 9px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .sub-btn.active {
+            background: rgba(240, 185, 11, 0.2);
+            color: #f0b90b;
+            border-color: #f0b90b;
+        }
+        .refresh-btn {
+            background: #0ecb81;
+            color: #000;
+            border: none;
+            padding: 9px 16px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* CALCULADORA DE GESTIÓN DE RIESGO DE CAPITAL */
+        .risk-calculator {
+            background: #12161c;
+            border: 1px solid #2b313a;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .calc-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+        }
+        .calc-group label {
+            color: #848e9c;
+        }
+        .calc-input {
+            background: #000;
+            border: 1px solid #2b313a;
+            color: #f0b90b;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            width: 100px;
+            font-size: 0.85rem;
+        }
+        .risk-result {
+            font-size: 0.82rem;
+            color: #0ecb81;
+            font-weight: bold;
+            margin-left: auto;
+        }
+        /* SECCIÓN TEÓRICA / ESTRATEGIA */
+        .strategy-box {
+            background: #12161c;
+            border: 1px solid #2b313a;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+        }
+        .strategy-box h3 {
+            font-size: 0.92rem;
+            color: #f0b90b;
+            margin-bottom: 5px;
+        }
+        .strategy-box p {
+            font-size: 0.78rem;
+            color: #848e9c;
+            line-height: 1.4;
+        }
+        /* TABLAS Y CONTENEDORES */
+        .market-section {
+            background: #12161c;
+            border: 1px solid #2b313a;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .market-header {
+            padding: 10px 14px;
+            background: #181a20;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #f0b90b;
+            border-bottom: 1px solid #2b313a;
+            display: flex;
+            justify-content: space-between;
+        }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+        th, td {
+            padding: 9px 12px;
+            text-align: left;
+            border-bottom: 1px solid #2b313a;
+        }
+        th {
+            background: #181a20;
+            color: #848e9c;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        tr.clickable-row {
+            cursor: pointer;
+        }
+        tr.clickable-row:hover {
+            background: rgba(240, 185, 11, 0.12) !important;
+        }
+        .text-right { text-align: right; }
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+        .badge-success { background: rgba(14, 203, 129, 0.2); color: #0ecb81; }
+        .badge-danger { background: rgba(246, 70, 93, 0.2); color: #f6465d; }
+        .badge-warning { background: rgba(240, 185, 11, 0.2); color: #f0b90b; }
+
+        #chart_section {
+            display: none;
+            width: 100vw;
+            height: 75vh;
+            background: #000000;
+            border-top: 2px solid #2b313a;
+            margin-top: 10px;
+            position: relative;
+            left: -10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Master Terminal Cuantitativa - Socio Estratégico</h1>
+            <p>Protección Férrea de Capital + Ratio Riesgo/Beneficio ≥ 1:2 Innegociable</p>
+        </header>
+
+        <div class="main-tabs">
+            <div id="tab-cripto" class="main-tab-btn active" onclick="switchMainTab('cripto')">1. CRIPTO (Binance 24/7)</div>
+            <div id="tab-acciones" class="main-tab-btn" onclick="switchMainTab('acciones')">2. ACCIONES (Quantfury / NYSE)</div>
+        </div>
+
+        <div class="sub-controls">
+            <div id="sub-buttons" class="sub-buttons" style="display:flex; gap:10px; flex:1;">
+                </div>
+            <button class="refresh-btn" onclick="refreshCurrentData()">Actualizar Datos</button>
+        </div>
+
+        <div class="risk-calculator">
+            <div class="calc-group">
+                <label for="capitalInput">Capital Total ($ USD):</label>
+                <input type="number" id="capitalInput" class="calc-input" value="1000" oninput="updateRiskCalc()">
+            </div>
+            <div class="calc-group">
+                <label for="riskPercentInput">% Riesgo x Operación:</label>
+                <input type="number" id="riskPercentInput" class="calc-input" value="2" step="0.5" min="0.5" max="5" oninput="updateRiskCalc()">
+            </div>
+            <div class="risk-result" id="riskResultText">
+                Riesgo Máximo por Operación: $20.00 USD (Stop Loss Blindado)
+            </div>
+        </div>
+
+        <div class="strategy-box">
+            <h3 id="strategy-title">Cargando Estrategia...</h3>
+            <p id="strategy-desc">Cargando parámetros...</p>
+        </div>
+
+        <div class="market-section">
+            <div class="market-header">
+                <span id="market-table-title">Activos Seleccionados</span>
+                <span style="font-size: 0.75rem; color: #848e9c;">Ratio Mínimo TP/SL = 2:1</span>
+            </div>
+            <div class="table-container">
+                <table id="mainTable">
+                    <thead id="mainThead"></thead>
+                    <tbody id="mainTbody">
+                        <tr><td colspan="8" style="text-align: center; padding: 20px;">Cargando mercado...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="chart_section">
+            <div id="tradingview_widget_container" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+    <script>
+        let currentMainTab = 'cripto';
+        let currentSubTab = 'futuros'; // Por defecto Futuros en Cripto
+
+        // DATOS SIMULADOS BASE CRIPTO Y ACCIONES
+        const criptoData = [
+            { symbol: 'BTCUSDT', name: 'Bitcoin', price: 64250.00, change: '+2.4%', type: 'LONG', obZone: '$63,800 - $64,000', rsi: 41, status: 'GATILLO ACTIVO' },
+            { symbol: 'ETHUSDT', name: 'Ethereum', price: 3480.50, change: '-1.1%', type: 'SHORT', obZone: '$3,520 - $3,540', rsi: 62, status: 'EN ZONA OB' },
+            { symbol: 'SOLUSDT', name: 'Solana', price: 142.10, change: '+5.8%', type: 'LONG', obZone: '$138.50 - $140.00', rsi: 38, status: 'GATILLO ACTIVO' },
+            { symbol: 'BNBUSDT', name: 'Binance Coin', price: 575.20, change: '+0.8%', type: 'LONG', obZone: '$568.00 - $570.00', rsi: 45, status: 'ESPERANDO' }
+        ];
+
+        const accionesData = [
+            { ticker: 'NVDA', name: 'NVIDIA Corp', price: 124.50, growth: '+122.4%', bullTrend: true, isExtended: false, rsi: 42 },
+            { ticker: 'AAPL', name: 'Apple Inc', price: 224.20, growth: '+10.5%', bullTrend: true, isExtended: false, rsi: 48 },
+            { ticker: 'MSFT', name: 'Microsoft Corp', price: 448.90, growth: '+15.2%', bullTrend: true, isExtended: false, rsi: 39 },
+            { ticker: 'GOOGL', name: 'Alphabet Inc', price: 177.80, growth: '+13.6%', bullTrend: true, isExtended: true, rsi: 72 },
+            { ticker: 'TSLA', name: 'Tesla Inc', price: 248.50, growth: '+11.2%', bullTrend: true, isExtended: true, rsi: 74 }
+        ];
+
+        function updateRiskCalc() {
+            const capital = parseFloat(document.getElementById('capitalInput').value) || 0;
+            const percent = parseFloat(document.getElementById('riskPercentInput').value) || 0;
+            const riskUSD = (capital * (percent / 100)).toFixed(2);
+            document.getElementById('riskResultText').innerText = `Riesgo Máximo por Operación: $${riskUSD} USD (Stop Loss Blindado)`;
+        }
+
+        function switchMainTab(tab) {
+            currentMainTab = tab;
+            document.getElementById('tab-cripto').classList.toggle('active', tab === 'cripto');
+            document.getElementById('tab-acciones').classList.toggle('active', tab === 'acciones');
+            
+            if (tab === 'cripto') {
+                currentSubTab = 'futuros';
+            } else {
+                currentSubTab = 'pullback';
+            }
+            renderSubButtons();
+            renderView();
+        }
+
+        function switchSubTab(sub) {
+            currentSubTab = sub;
+            renderSubButtons();
+            renderView();
+        }
+
+        function renderSubButtons() {
+            const container = document.getElementById('sub-buttons');
+            container.innerHTML = '';
+
+            if (currentMainTab === 'cripto') {
+                container.innerHTML = `
+                    <button class="sub-btn ${currentSubTab === 'futuros' ? 'active' : ''}" onclick="switchSubTab('futuros')">CRIPTO FUTUROS (Dual Long/Short)</button>
+                    <button class="sub-btn ${currentSubTab === 'spot' ? 'active' : ''}" onclick="switchSubTab('spot')">CRIPTO SPOT (Acumulación)</button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button class="sub-btn ${currentSubTab === 'pullback' ? 'active' : ''}" onclick="switchSubTab('pullback')">SETUP 1: PULLBACK (Descuento SMA50)</button>
+                    <button class="sub-btn ${currentSubTab === 'momentum' ? 'active' : ''}" onclick="switchSubTab('momentum')">SETUP 2: MOMENTUM (Rebote EMA20)</button>
+                `;
+            }
+        }
+
+        function renderView() {
+            document.getElementById('chart_section').style.display = 'none';
+            const title = document.getElementById('strategy-title');
+            const desc = document.getElementById('strategy-desc');
+            const thead = document.getElementById('mainThead');
+            const tbody = document.getElementById('mainTbody');
+
+            tbody.innerHTML = '';
+
+            if (currentMainTab === 'cripto') {
+                if (currentSubTab === 'futuros') {
+                    title.innerText = 'Estrategia Cripto Futuros: Order Blocks + FVG + RSI Dual (Long/Short)';
+                    desc.innerHTML = 'Operamos en ambas direcciones del mercado (15M, 1H, 4H). Buscamos entradas de precisión en **Order Blocks (OB)** con apoyo de **Fair Value Gaps (FVG)** y vacíos de liquidez. Stop Loss ajustado al nivel invalidador del OB y Take Profit siempre al 2:1.';
+                } else {
+                    title.innerText = 'Estrategia Cripto Spot: Acumulación Institucional en Zonas de Interés';
+                    desc.innerHTML = 'Compras de activos sólidos en soporte diario/4H. Sin apalancamiento, acumulando en zonas de descuento con RSI < 40.';
+                }
+
+                thead.innerHTML = `
+                    <tr>
+                        <th>Par Cripto ↕</th>
+                        <th class="text-right">Precio Actual ↕</th>
+                        <th class="text-right">24h ↕</th>
+                        <th>Dirección ↕</th>
+                        <th>Zona Order Block / FVG ↕</th>
+                        <th class="text-right">RSI (14) ↕</th>
+                        <th>Estado ↕</th>
+                        <th class="text-right">Take Profit (2:1) ↕</th>
+                    </tr>
+                `;
+
+                criptoData.forEach(c => {
+                    const tp = c.type === 'LONG' ? (c.price * 1.04).toFixed(2) : (c.price * 0.96).toFixed(2);
+                    const row = document.createElement('tr');
+                    row.className = 'clickable-row';
+                    row.onclick = () => loadChart(`BINANCE:${c.symbol}`);
+                    row.innerHTML = `
+                        <td><strong>${c.symbol}</strong> <span style="color:#848e9c; font-size:0.7rem;">(${c.name})</span></td>
+                        <td class="text-right">$${c.price.toFixed(2)}</td>
+                        <td class="text-right" style="color:${c.change.startsWith('+') ? '#0ecb81':'#f6465d'}">${c.change}</td>
+                        <td><span class="badge ${c.type === 'LONG' ? 'badge-success':'badge-danger'}">${c.type}</span></td>
+                        <td><span style="color:#f0b90b;">${c.obZone}</span></td>
+                        <td class="text-right">${c.rsi}</td>
+                        <td><span class="badge badge-warning">${c.status}</span></td>
+                        <td class="text-right" style="color:#0ecb81; font-weight:bold;">$${tp}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+            } else {
+                if (currentSubTab === 'pullback') {
+                    title.innerText = 'Estrategia Quant Growth: Pullback / Descuento Ideal (NYSE)';
+                    desc.innerHTML = 'Filtramos empresas con `Ventas Growth > 10%` y tendencia alcista `Precio > SMA200`. Buscamos entradas cuando el precio descansa cerca de la **SMA50** con RSI neutral/bajo (35-45).';
+                } else {
+                    title.innerText = 'Estrategia Quant Growth: Rebote / Momentum (NYSE)';
+                    desc.innerHTML = 'Captura de impulsos de continuación apoyados en la **EMA20** y confluencia de volumen creciente. Prohibido comprar si el activo está extendido.';
+                }
+
+                thead.innerHTML = `
+                    <tr>
+                        <th>Ticker / Empresa ↕</th>
+                        <th class="text-right">Precio ↕</th>
+                        <th class="text-right">Ventas Growth ↕</th>
+                        <th>Tendencia (SMA200) ↕</th>
+                        <th>Filtro Extensión ↕</th>
+                        <th class="text-right">Entrada Ideal ↕</th>
+                        <th class="text-right">Stop Loss (SMA50) ↕</th>
+                        <th class="text-right">Take Profit (≥ 1:2) ↕</th>
+                    </tr>
+                `;
+
+                accionesData.forEach(a => {
+                    const entry = (a.price * (currentSubTab === 'pullback' ? 0.985 : 1.005)).toFixed(2);
+                    const sl = (entry * 0.965).toFixed(2);
+                    const risk = entry - sl;
+                    const tp = (parseFloat(entry) + (risk * 2.1)).toFixed(2);
+
+                    const extendedBadge = a.isExtended ? 
+                        '<span class="badge badge-danger">EXTENDIDO (NO COMPRAR)</span>' : 
+                        '<span class="badge badge-success">SANO (VALIDO)</span>';
+
+                    const row = document.createElement('tr');
+                    row.className = 'clickable-row';
+                    row.onclick = () => loadChart(`NASDAQ:${a.ticker}`);
+                    row.innerHTML = `
+                        <td><strong>${a.ticker}</strong> <span style="color:#848e9c; font-size:0.7rem;">(${a.name})</span></td>
+                        <td class="text-right">$${a.price.toFixed(2)}</td>
+                        <td class="text-right" style="color:#0ecb81; font-weight:bold;">${a.growth}</td>
+                        <td><span class="badge badge-success">ALCISTA (> SMA200)</span></td>
+                        <td>${extendedBadge}</td>
+                        <td class="text-right">$${entry}</td>
+                        <td class="text-right" style="color:#f6465d;">$${sl}</td>
+                        <td class="text-right" style="color:#0ecb81; font-weight:bold;">$${tp}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        function loadChart(symbol) {
+            const chartSection = document.getElementById('chart_section');
+            chartSection.style.display = 'block';
+            document.getElementById('tradingview_widget_container').innerHTML = '';
+
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": symbol,
+                "interval": currentMainTab === 'cripto' ? "60" : "D",
+                "timezone": "Etc/UTC",
+                "theme": "dark",
+                "style": "1",
+                "locale": "es",
+                "toolbar_bg": "#000000",
+                "enable_publishing": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "save_image": false,
+                "studies": [
+                    "Moving Average@tv-basicstudies",
+                    "Moving Average Exponential@tv-basicstudies",
+                    "RSI@tv-basicstudies",
+                    "Volume@tv-basicstudies"
+                ],
+                "container_id": "tradingview_widget_container",
+                "overrides": {
+                    "paneProperties.background": "#000000",
+                    "paneProperties.vertGridProperties.color": "#121212",
+                    "paneProperties.horzGridProperties.color": "#121212"
+                }
+            });
+
+            chartSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function refreshCurrentData() {
+            renderView();
+        }
+
+        // INICIALIZACIÓN DE LA TERMINAL
+        renderSubButtons();
+        renderView();
+        updateRiskCalc();
+    </script>
+</body>
+</html>
