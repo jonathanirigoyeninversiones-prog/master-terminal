@@ -312,8 +312,9 @@
                 titleElem.innerText = `Acumulación Spot - ${currentSymbol.split(':')[1] || currentSymbol}`;
                 badgeElem.innerText = "SPOT";
                 badgeElem.className = "badge badge-spot";
-                stratElem.innerHTML = "<strong>Estrategia Spot:</strong> Diseñada para la acumulación estratégica de activos de alta liquidez sin apalancamiento. En Spot no hace falta configurar Stop Loss ni Take Profit ya que adquirimos el activo real sin riesgo de liquidación. Las compras se ejecutan en zonas de soporte técnico e intervalos clave (1D/4H).";
+                stratElem.innerHTML = "<strong>Estrategia Spot:</strong> Diseñada para la acumulación estratégica de activos sin apalancamiento ni riesgo de liquidación. En Spot <strong>no se aplican Stop Loss ni Take Profit</strong>. Para que la operación sea <strong>EJECUTIVA</strong>, el volumen de la vela debe sobrepasar la media móvil de volumen de 20 períodos (MA20).";
 
+                // Pestaña SPOT: Sin SL ni TP, con filtro de volumen
                 inputsElem.innerHTML = `
                     <div class="input-group">
                         <label>Capital Asignado ($ USD):</label>
@@ -323,6 +324,13 @@
                         <label>Precio Compra Spot ($):</label>
                         <input type="number" id="inp-price" value="65000" oninput="calculateSpotMetrics()">
                     </div>
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Filtro de Volumen vs Media 20 Períodos (MA20):</label>
+                        <select id="inp-spot-vol" onchange="calculateSpotMetrics()">
+                            <option value="above">Volumen Sobrepasa MA20 (Clímax Confirmado)</option>
+                            <option value="below">Volumen Bajo MA20 (Sin Confirmación)</option>
+                        </select>
+                    </div>
                 `;
 
                 metricsElem.innerHTML = `
@@ -331,8 +339,8 @@
                         <span class="metric-value val-green" id="met-units">0.00</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">Riesgo de Liquidación:</span>
-                        <span class="metric-value val-green">0% (Ninguno)</span>
+                        <span class="metric-label">Condición Ejecutiva:</span>
+                        <span class="metric-value" id="met-spot-status">Analizando...</span>
                     </div>
                 `;
                 calculateSpotMetrics();
@@ -341,10 +349,9 @@
                 titleElem.innerText = `Futuros Binance - ${currentSymbol.split(':')[1] || currentSymbol}`;
                 badgeElem.innerText = "FUTUROS";
                 badgeElem.className = "badge badge-futures";
-                
-                stratElem.innerHTML = "<strong>Estrategia Futuros (BTC/USDT) con Filtro de Volumen:</strong> Operativa en Margen Aislado con apalancamiento controlado de 3x a 5x. <strong>Uso de Stop Loss (SL) y Take Profit (TP) en ratio mínimo 2:1 obligatorio</strong>. La entrada requiere validación por <strong>Volumen Clímax</strong> (superior a la media de 20 periodos) incrustado en el cálculo cuantitativo.";
+                stratElem.innerHTML = "<strong>Estrategia Futuros (BTC/USDT):</strong> Operativa en Margen Aislado con apalancamiento controlado (3x a 5x). <strong>Uso de Stop Loss (SL) y Take Profit (TP) en ratio mínimo 2:1 obligatorio</strong>. Para considerarse <strong>EJECUTIVA</strong>, la orden requiere además que el volumen sobrepase la media de 20 períodos (MA20).";
 
-                // INSUMOS DE FUTUROS: Incluye selector dinámico de Confirmación de Volumen
+                // Pestaña FUTUROS: Con SL, TP, Ratio R/R y filtro de volumen
                 inputsElem.innerHTML = `
                     <div class="input-group">
                         <label>Balance Cuenta ($):</label>
@@ -367,15 +374,14 @@
                         <input type="number" id="inp-fut-tp" value="67000" oninput="calculateFuturesMetrics()">
                     </div>
                     <div class="input-group">
-                        <label>Volumen Vela vs MA20:</label>
+                        <label>Volumen vs MA20:</label>
                         <select id="inp-fut-vol" onchange="calculateFuturesMetrics()">
-                            <option value="climax">Volumen Clímax (Confirmado)</option>
-                            <option value="low">Volumen Bajo / Divergencia</option>
+                            <option value="above">Volumen Sobrepasa MA20</option>
+                            <option value="below">Volumen Bajo MA20</option>
                         </select>
                     </div>
                 `;
 
-                // MÉTRICAS DE FUTUROS: Incluye Validación de Volumen incrustada
                 metricsElem.innerHTML = `
                     <div class="metric-item">
                         <span class="metric-label">Pérdida Máx (SL):</span>
@@ -386,12 +392,12 @@
                         <span class="metric-value val-green" id="met-fut-profit">+$0.00</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">Ratio Riesgo/Beneficio:</span>
+                        <span class="metric-label">Ratio R/R (Mín 2:1):</span>
                         <span class="metric-value val-gold" id="met-fut-rr">0.00 : 1</span>
                     </div>
                     <div class="metric-item">
-                        <span class="metric-label">Validación Cuantitativa de Volumen:</span>
-                        <span class="metric-value" id="met-fut-vol-status">Analizando...</span>
+                        <span class="metric-label">Condición Ejecutiva:</span>
+                        <span class="metric-value" id="met-fut-status">Analizando...</span>
                     </div>
                 `;
                 calculateFuturesMetrics();
@@ -400,44 +406,69 @@
                 titleElem.innerText = `Bolsa de Nueva York - ${currentSymbol}`;
                 badgeElem.innerText = "NYSE";
                 badgeElem.className = "badge badge-nyse";
-                stratElem.innerHTML = "<strong>Estrategia NYSE / Renta Variable:</strong> Análisis macroestructural en temporalidad Diaria (1D) para evaluar bloques de órdenes institucionales y vacuidades de liquidez en las principales acciones y ETFs globales.";
+                stratElem.innerHTML = "<strong>Estrategia NYSE / Renta Variable:</strong> Análisis macroestructural en 1D/4H. Para que la entrada institucional sea considerada <strong>EJECUTIVA</strong>, la vela de gatillo debe confirmar un volumen que sobrepase la media de 20 períodos (MA20).";
 
+                // Pestaña NYSE: Con filtro de volumen incrustado
                 inputsElem.innerHTML = `
-                    <div class="input-group" style="grid-column: span 2;">
+                    <div class="input-group">
                         <label>Mercado NYSE Seleccionado:</label>
                         <input type="text" value="${currentSymbol}" readonly style="color: #f0b90b; font-weight: bold;">
+                    </div>
+                    <div class="input-group">
+                        <label>Filtro de Volumen vs MA20:</label>
+                        <select id="inp-nyse-vol" onchange="calculateNYSEMetrics()">
+                            <option value="above">Volumen Sobrepasa MA20</option>
+                            <option value="below">Volumen Bajo MA20</option>
+                        </select>
                     </div>
                 `;
 
                 metricsElem.innerHTML = `
-                    <div class="metric-item" style="grid-column: span 2;">
+                    <div class="metric-item">
                         <span class="metric-label">Temporalidad de Análisis:</span>
-                        <span class="metric-value val-gold">1D (Diario) / 4H (Intradía)</span>
+                        <span class="metric-value val-gold">1D (Diario) / 4H</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Condición Ejecutiva:</span>
+                        <span class="metric-value" id="met-nyse-status">Analizando...</span>
                     </div>
                 `;
+                calculateNYSEMetrics();
             }
 
             renderTradingViewWidget(currentSymbol);
         }
 
-        // CÁLCULOS SPOT
+        // CÁLCULOS SPOT CON FILTRO DE VOLUMEN
         function calculateSpotMetrics() {
             const capital = parseFloat(document.getElementById('inp-capital').value) || 0;
             const price = parseFloat(document.getElementById('inp-price').value) || 1;
+            const volStatus = document.getElementById('inp-spot-vol') ? document.getElementById('inp-spot-vol').value : 'above';
+
             const units = capital / price;
-            
             const symbolClean = currentSymbol.split(':')[1] ? currentSymbol.split(':')[1].replace('USDT', '') : 'UNID';
             document.getElementById('met-units').innerText = `${units.toFixed(5)} ${symbolClean}`;
+
+            const statusElem = document.getElementById('met-spot-status');
+            if (statusElem) {
+                if (volStatus === 'above') {
+                    statusElem.innerText = "EJECUTIVA (Volumen OK)";
+                    statusElem.className = "metric-value val-green";
+                } else {
+                    statusElem.innerText = "NO EJECUTIVA (Bajo Vol)";
+                    statusElem.className = "metric-value val-red";
+                }
+            }
         }
 
-        // CÁLCULOS FUTUROS (LÓGICA CON VOLUMEN INCRUSTADO)
+        // CÁLCULOS FUTUROS CON TP, SL, RATIO R/R Y FILTRO DE VOLUMEN
         function calculateFuturesMetrics() {
             const balance = parseFloat(document.getElementById('inp-fut-bal').value) || 0;
             const riskPct = parseFloat(document.getElementById('inp-fut-risk').value) || 0;
             const entry = parseFloat(document.getElementById('inp-fut-entry').value) || 1;
             const sl = parseFloat(document.getElementById('inp-fut-sl').value) || 1;
             const tp = parseFloat(document.getElementById('inp-fut-tp').value) || 1;
-            const volConfirm = document.getElementById('inp-fut-vol') ? document.getElementById('inp-fut-vol').value : 'climax';
+            const volStatus = document.getElementById('inp-fut-vol') ? document.getElementById('inp-fut-vol').value : 'above';
 
             const maxLoss = balance * (riskPct / 100);
             const distSL = Math.abs(entry - sl);
@@ -459,19 +490,34 @@
                     rrElem.className = "metric-value val-green";
                 }
 
-                // INCRUSTACIÓN DE LA LÓGICA DE VOLUMEN
-                const volElem = document.getElementById('met-fut-vol-status');
-                if (volElem) {
-                    if (volConfirm === 'climax' && rr >= 2.0) {
-                        volElem.innerText = "ENTRADA VÁLIDA (Volumen OK)";
-                        volElem.className = "metric-value val-green";
-                    } else if (volConfirm === 'low') {
-                        volElem.innerText = "RIESGO: Falso Rompimiento (Bajo Vol)";
-                        volElem.className = "metric-value val-red";
+                // Validación Ejecutiva Dinámica en Futuros
+                const statusElem = document.getElementById('met-fut-status');
+                if (statusElem) {
+                    if (volStatus === 'above' && rr >= 2.0) {
+                        statusElem.innerText = "EJECUTIVA (Volumen y R/R OK)";
+                        statusElem.className = "metric-value val-green";
+                    } else if (volStatus !== 'above') {
+                        statusElem.innerText = "NO EJECUTIVA (Bajo Vol)";
+                        statusElem.className = "metric-value val-red";
                     } else {
-                        volElem.innerText = "REVISAR R/R (Incapaz de Gatillar)";
-                        volElem.className = "metric-value val-gold";
+                        statusElem.innerText = "NO EJECUTIVA (R/R < 2:1)";
+                        statusElem.className = "metric-value val-red";
                     }
+                }
+            }
+        }
+
+        // CÁLCULOS NYSE CON FILTRO DE VOLUMEN
+        function calculateNYSEMetrics() {
+            const volStatus = document.getElementById('inp-nyse-vol') ? document.getElementById('inp-nyse-vol').value : 'above';
+            const statusElem = document.getElementById('met-nyse-status');
+            if (statusElem) {
+                if (volStatus === 'above') {
+                    statusElem.innerText = "EJECUTIVA (Volumen OK)";
+                    statusElem.className = "metric-value val-green";
+                } else {
+                    statusElem.innerText = "NO EJECUTIVA (Bajo Vol)";
+                    statusElem.className = "metric-value val-red";
                 }
             }
         }
