@@ -13,7 +13,7 @@
         body, html {
             width: 100%;
             height: 100%;
-            background-color: #000000; /* Fondo Negro Absoluto Institucional */
+            background-color: #000000;
             color: #eaecef;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
@@ -42,8 +42,6 @@
             color: #848e9c;
             margin-top: 4px;
         }
-        
-        /* Pestañas Principales */
         .main-tabs {
             display: flex;
             gap: 6px;
@@ -68,36 +66,6 @@
             background-color: #f0b90b;
             color: #000000;
         }
-
-        /* Sub-Botones / Selectores de Activos */
-        .sub-nav {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-            scrollbar-width: none;
-        }
-        .sub-nav::-webkit-scrollbar {
-            display: none;
-        }
-        .sub-btn {
-            padding: 6px 12px;
-            background-color: #1e2329;
-            border: 1px solid #2b313a;
-            color: #eaecef;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .sub-btn.active {
-            border-color: #f0b90b;
-            color: #f0b90b;
-            background-color: rgba(240, 185, 11, 0.1);
-        }
-
-        /* Tarjeta Contenedora Principal */
         .card {
             background-color: #181a20;
             border: 1px solid #2b313a;
@@ -127,7 +95,6 @@
         .badge-futures { background-color: rgba(246, 70, 93, 0.2); color: #f6465d; }
         .badge-nyse { background-color: rgba(56, 97, 251, 0.2); color: #3861fb; }
 
-        /* Párrafo Explicativo de Estrategia */
         .strategy-text {
             font-size: 0.85rem;
             line-height: 1.4;
@@ -138,8 +105,6 @@
             border-left: 3px solid #f0b90b;
             margin-bottom: 12px;
         }
-
-        /* Formularios e Inputs */
         .grid-inputs {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -164,11 +129,6 @@
             font-size: 0.85rem;
             outline: none;
         }
-        .input-group input:focus, .input-group select:focus {
-            border-color: #f0b90b;
-        }
-
-        /* Panel de Resultados / Métricas */
         .metrics-panel {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -176,6 +136,7 @@
             background-color: #0b0e11;
             padding: 10px;
             border-radius: 6px;
+            margin-bottom: 12px;
         }
         .metric-item {
             display: flex;
@@ -194,7 +155,41 @@
         .val-red { color: #f6465d; }
         .val-gold { color: #f0b90b; }
 
-        /* Contenedor del Gráfico TradingView */
+        /* Estilo de la Tabla de 50 Criptomonedas / Activos */
+        .table-container {
+            max-height: 280px;
+            overflow-y: auto;
+            border: 1px solid #2b313a;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            background-color: #0b0e11;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #1e2329;
+        }
+        th {
+            background-color: #181a20;
+            color: #848e9c;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        tr:hover {
+            background-color: #1e2329;
+            cursor: pointer;
+        }
+        tr.active-row {
+            background-color: rgba(240, 185, 11, 0.15);
+            border-left: 3px solid #f0b90b;
+        }
+
         .chart-box {
             height: 450px;
             width: 100%;
@@ -219,8 +214,6 @@
             <button class="tab-btn" onclick="setMainTab('nyse')">NYSE</button>
         </div>
 
-        <div class="sub-nav" id="sub-nav-container"></div>
-
         <div class="card">
             <div class="card-header">
                 <span class="card-title" id="card-title-text">Cargando...</span>
@@ -234,73 +227,144 @@
             <div class="grid-inputs" id="inputs-container"></div>
 
             <div class="metrics-panel" id="metrics-container"></div>
+
+            <div style="font-size: 0.8rem; color: #f0b90b; font-weight: bold; margin-bottom: 6px;">
+                SELECCIONA UN ACTIVO DE LA LISTA PARA ABRIR EN TRADINGVIEW:
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Activo</th>
+                            <th>Par / Símbolo</th>
+                            <th>Mercado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="crypto-table-body">
+                        </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="chart-box" id="tradingview_widget_container"></div>
     </div>
 
     <script>
-        // ESTADO GLOBAL DE LA APLICACIÓN
-        let currentMainTab = 'spot'; // 'spot', 'futuros', 'nyse'
+        let currentMainTab = 'spot';
         let currentSymbol = 'BINANCE:BTCUSDT';
 
-        // LISTA DE ACTIVOS POR MERCADO
-        const assetsList = {
-            spot: [
-                { name: 'BTC / USDT', symbol: 'BINANCE:BTCUSDT' },
-                { name: 'ETH / USDT', symbol: 'BINANCE:ETHUSDT' },
-                { name: 'SOL / USDT', symbol: 'BINANCE:SOLUSDT' },
-                { name: 'BNB / USDT', symbol: 'BINANCE:BNBUSDT' }
-            ],
-            futuros: [
-                { name: 'BTC / USDT (Futuros)', symbol: 'BINANCE:BTCUSDT.P' },
-                { name: 'ETH / USDT (Futuros)', symbol: 'BINANCE:ETHUSDT.P' },
-                { name: 'SOL / USDT (Futuros)', symbol: 'BINANCE:SOLUSDT.P' }
-            ],
-            nyse: [
-                { name: 'SPY (S&P 500 ETF)', symbol: 'AMEX:SPY' },
-                { name: 'QQQ (Invesco QQQ)', symbol: 'NASDAQ:QQQ' },
-                { name: 'NVDA (NVIDIA)', symbol: 'NASDAQ:NVDA' },
-                { name: 'AAPL (Apple)', symbol: 'NASDAQ:AAPL' }
-            ]
-        };
+        // 50 Criptomonedas / Activos Principales
+        const top50Cryptos = [
+            { id: 1, name: 'Bitcoin', symbol: 'BTCUSDT' },
+            { id: 2, name: 'Ethereum', symbol: 'ETHUSDT' },
+            { id: 3, name: 'Binance Coin', symbol: 'BNBUSDT' },
+            { id: 4, name: 'Solana', symbol: 'SOLUSDT' },
+            { id: 5, name: 'Ripple', symbol: 'XRPUSDT' },
+            { id: 6, name: 'Cardano', symbol: 'ADAUSDT' },
+            { id: 7, name: 'Dogecoin', symbol: 'DOGEUSDT' },
+            { id: 8, name: 'Avalanche', symbol: 'AVAXUSDT' },
+            { id: 9, name: 'Shiba Inu', symbol: 'SHIBUSDT' },
+            { id: 10, name: 'Polkadot', symbol: 'DOTUSDT' },
+            { id: 11, name: 'TRON', symbol: 'TRXUSDT' },
+            { id: 12, name: 'Chainlink', symbol: 'LINKUSDT' },
+            { id: 13, name: 'Polygon', symbol: 'MATICUSDT' },
+            { id: 14, name: 'Near Protocol', symbol: 'NEARUSDT' },
+            { id: 15, name: 'Uniswap', symbol: 'UNIUSDT' },
+            { id: 16, name: 'Litecoin', symbol: 'LTCUSDT' },
+            { id: 17, name: 'Pepe', symbol: 'PEPEUSDT' },
+            { id: 18, name: 'Internet Computer', symbol: 'ICPUSDT' },
+            { id: 19, name: 'Kaspa', symbol: 'KASUSDT' },
+            { id: 20, name: 'Aptos', symbol: 'APTUSDT' },
+            { id: 21, name: 'Ethereum Classic', symbol: 'ETCUSDT' },
+            { id: 22, name: 'Render', symbol: 'RNDRUSDT' },
+            { id: 23, name: 'Hedera', symbol: 'HBARUSDT' },
+            { id: 24, name: 'Stellar', symbol: 'XLMUSDT' },
+            { id: 25, name: 'Cosmos', symbol: 'ATOMUSDT' },
+            { id: 26, name: 'Arbitrum', symbol: 'ARBUSDT' },
+            { id: 27, name: 'Stacks', symbol: 'STXUSDT' },
+            { id: 28, name: 'Injective', symbol: 'INJUSDT' },
+            { id: 29, name: 'Filecoin', symbol: 'FILUSDT' },
+            { id: 30, name: 'Immutable', symbol: 'IMXUSDT' },
+            { id: 31, name: 'Sui', symbol: 'SUIUSDT' },
+            { id: 32, name: 'Maker', symbol: 'MKRUSDT' },
+            { id: 33, name: 'GALA', symbol: 'GALAUSDT' },
+            { id: 34, name: 'Bittensor', symbol: 'TAOUSDT' },
+            { id: 35, name: 'Fantom', symbol: 'FTMUSDT' },
+            { id: 36, name: 'Vechain', symbol: 'VETUSDT' },
+            { id: 37, name: 'Optimism', symbol: 'OPUSDT' },
+            { id: 38, name: 'Theta Network', symbol: 'THETAUSDT' },
+            { id: 39, name: 'Thorchain', symbol: 'RUNEUSDT' },
+            { id: 40, name: 'Sei', symbol: 'SEIUSDT' },
+            { id: 41, name: 'Algorand', symbol: 'ALGOUSDT' },
+            { id: 42, name: 'Flow', symbol: 'FLOWUSDT' },
+            { id: 43, name: 'MultiversX', symbol: 'EGLDUSDT' },
+            { id: 44, name: 'Aave', symbol: 'AAVEUSDT' },
+            { id: 45, name: 'The Sandbox', symbol: 'SANDUSDT' },
+            { id: 46, name: 'Decentraland', symbol: 'MANAUSDT' },
+            { id: 47, name: 'EOS', symbol: 'EOSUSDT' },
+            { id: 48, name: 'Axie Infinity', symbol: 'AXSUSDT' },
+            { id: 49, name: 'Tezos', symbol: 'XTZUSDT' },
+            { id: 50, name: 'Chiliz', symbol: 'CHZUSDT' }
+        ];
 
-        // CAMBIO DE PESTAÑA PRINCIPAL
+        const nyseAssets = [
+            { id: 1, name: 'S&P 500 ETF', symbol: 'AMEX:SPY' },
+            { id: 2, name: 'Invesco QQQ', symbol: 'NASDAQ:QQQ' },
+            { id: 3, name: 'NVIDIA Corp', symbol: 'NASDAQ:NVDA' },
+            { id: 4, name: 'Apple Inc', symbol: 'NASDAQ:AAPL' },
+            { id: 5, name: 'Tesla Inc', symbol: 'NASDAQ:TSLA' }
+        ];
+
         function setMainTab(tab) {
             currentMainTab = tab;
-            
-            // Actualizar botones de pestaña
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.innerText.toLowerCase() === tab) btn.classList.add('active');
             });
 
-            // Seleccionar primer activo por defecto
-            currentSymbol = assetsList[tab][0].symbol;
+            if (tab === 'nyse') {
+                currentSymbol = nyseAssets[0].symbol;
+            } else if (tab === 'futuros') {
+                currentSymbol = `BINANCE:${top50Cryptos[0].symbol}.P`;
+            } else {
+                currentSymbol = `BINANCE:${top50Cryptos[0].symbol}`;
+            }
 
-            renderSubButtons();
             renderView();
         }
 
-        // RENDERIZAR SUB-BOTONES (SELECCIÓN DE ACTIVO)
-        function renderSubButtons() {
-            const container = document.getElementById('sub-nav-container');
-            container.innerHTML = '';
+        function renderCryptoTable() {
+            const tbody = document.getElementById('crypto-table-body');
+            tbody.innerHTML = '';
 
-            assetsList[currentMainTab].forEach(asset => {
-                const btn = document.createElement('button');
-                btn.className = `sub-btn ${asset.symbol === currentSymbol ? 'active' : ''}`;
-                btn.innerText = asset.name;
-                btn.onclick = () => {
-                    currentSymbol = asset.symbol;
-                    renderSubButtons();
-                    renderView();
+            const dataset = currentMainTab === 'nyse' ? nyseAssets : top50Cryptos;
+
+            dataset.forEach(item => {
+                const tr = document.createElement('tr');
+                
+                let symbolTV = item.symbol;
+                if (currentMainTab === 'spot') symbolTV = `BINANCE:${item.symbol}`;
+                else if (currentMainTab === 'futuros') symbolTV = `BINANCE:${item.symbol}.P`;
+
+                if (symbolTV === currentSymbol) tr.className = 'active-row';
+
+                tr.onclick = () => {
+                    currentSymbol = symbolTV;
+                    renderCryptoTable();
+                    renderTradingViewWidget(currentSymbol);
                 };
-                container.appendChild(btn);
+
+                tr.innerHTML = `
+                    <td>${item.id}</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td style="color: #f0b90b;">${item.symbol}</td>
+                    <td><span class="badge badge-${currentMainTab}">${currentMainTab.toUpperCase()}</span></td>
+                `;
+                tbody.appendChild(tr);
             });
         }
 
-        // RENDERIZAR VISTA COMPLETA (TEXTO, CALCULADORA Y GRÁFICO)
         function renderView() {
             const titleElem = document.getElementById('card-title-text');
             const badgeElem = document.getElementById('card-badge');
@@ -309,12 +373,11 @@
             const metricsElem = document.getElementById('metrics-container');
 
             if (currentMainTab === 'spot') {
-                titleElem.innerText = `Acumulación Spot - ${currentSymbol.split(':')[1] || currentSymbol}`;
+                titleElem.innerText = `Estrategia Spot - ${currentSymbol.replace('BINANCE:', '')}`;
                 badgeElem.innerText = "SPOT";
                 badgeElem.className = "badge badge-spot";
-                stratElem.innerHTML = "<strong>Estrategia Spot:</strong> Diseñada para la acumulación estratégica de activos sin apalancamiento ni riesgo de liquidación. En Spot <strong>no se aplican Stop Loss ni Take Profit</strong>. Para que la operación sea <strong>EJECUTIVA</strong>, el volumen de la vela debe sobrepasar la media móvil de volumen de 20 períodos (MA20).";
+                stratElem.innerHTML = "<strong>Estrategia Spot:</strong> Acumulación estratégica sin apalancamiento ni riesgo de liquidación. En Spot <strong>no se aplican Stop Loss ni Take Profit</strong>. Condición Ejecutiva: El volumen debe superar la media móvil de 20 períodos (MA20).";
 
-                // Pestaña SPOT: Sin SL ni TP, con filtro de volumen
                 inputsElem.innerHTML = `
                     <div class="input-group">
                         <label>Capital Asignado ($ USD):</label>
@@ -346,12 +409,11 @@
                 calculateSpotMetrics();
 
             } else if (currentMainTab === 'futuros') {
-                titleElem.innerText = `Futuros Binance - ${currentSymbol.split(':')[1] || currentSymbol}`;
+                titleElem.innerText = `Estrategia Futuros - ${currentSymbol.replace('BINANCE:', '')}`;
                 badgeElem.innerText = "FUTUROS";
                 badgeElem.className = "badge badge-futures";
-                stratElem.innerHTML = "<strong>Estrategia Futuros (BTC/USDT):</strong> Operativa en Margen Aislado con apalancamiento controlado (3x a 5x). <strong>Uso de Stop Loss (SL) y Take Profit (TP) en ratio mínimo 2:1 obligatorio</strong>. Para considerarse <strong>EJECUTIVA</strong>, la orden requiere además que el volumen sobrepase la media de 20 períodos (MA20).";
+                stratElem.innerHTML = "<strong>Estrategia Futuros (BTC/USDT):</strong> Operativa en Margen Aislado con apalancamiento (3x-5x). <strong>Uso de Stop Loss (SL) y Take Profit (TP) con Ratio mínimo 2:1 obligatorio</strong>. Condición Ejecutiva: Requiere que el volumen sobrepase la media de 20 períodos (MA20).";
 
-                // Pestaña FUTUROS: Con SL, TP, Ratio R/R y filtro de volumen
                 inputsElem.innerHTML = `
                     <div class="input-group">
                         <label>Balance Cuenta ($):</label>
@@ -406,12 +468,11 @@
                 titleElem.innerText = `Bolsa de Nueva York - ${currentSymbol}`;
                 badgeElem.innerText = "NYSE";
                 badgeElem.className = "badge badge-nyse";
-                stratElem.innerHTML = "<strong>Estrategia NYSE / Renta Variable:</strong> Análisis macroestructural en 1D/4H. Para que la entrada institucional sea considerada <strong>EJECUTIVA</strong>, la vela de gatillo debe confirmar un volumen que sobrepase la media de 20 períodos (MA20).";
+                stratElem.innerHTML = "<strong>Estrategia NYSE:</strong> Análisis macroestructural en 1D/4H. Condición Ejecutiva: Requiere confirmar volumen que sobrepase la media de 20 períodos (MA20).";
 
-                // Pestaña NYSE: Con filtro de volumen incrustado
                 inputsElem.innerHTML = `
                     <div class="input-group">
-                        <label>Mercado NYSE Seleccionado:</label>
+                        <label>Mercado Seleccionado:</label>
                         <input type="text" value="${currentSymbol}" readonly style="color: #f0b90b; font-weight: bold;">
                     </div>
                     <div class="input-group">
@@ -436,18 +497,17 @@
                 calculateNYSEMetrics();
             }
 
+            renderCryptoTable();
             renderTradingViewWidget(currentSymbol);
         }
 
-        // CÁLCULOS SPOT CON FILTRO DE VOLUMEN
         function calculateSpotMetrics() {
             const capital = parseFloat(document.getElementById('inp-capital').value) || 0;
             const price = parseFloat(document.getElementById('inp-price').value) || 1;
             const volStatus = document.getElementById('inp-spot-vol') ? document.getElementById('inp-spot-vol').value : 'above';
 
             const units = capital / price;
-            const symbolClean = currentSymbol.split(':')[1] ? currentSymbol.split(':')[1].replace('USDT', '') : 'UNID';
-            document.getElementById('met-units').innerText = `${units.toFixed(5)} ${symbolClean}`;
+            document.getElementById('met-units').innerText = `${units.toFixed(5)}`;
 
             const statusElem = document.getElementById('met-spot-status');
             if (statusElem) {
@@ -461,7 +521,6 @@
             }
         }
 
-        // CÁLCULOS FUTUROS CON TP, SL, RATIO R/R Y FILTRO DE VOLUMEN
         function calculateFuturesMetrics() {
             const balance = parseFloat(document.getElementById('inp-fut-bal').value) || 0;
             const riskPct = parseFloat(document.getElementById('inp-fut-risk').value) || 0;
@@ -490,7 +549,6 @@
                     rrElem.className = "metric-value val-green";
                 }
 
-                // Validación Ejecutiva Dinámica en Futuros
                 const statusElem = document.getElementById('met-fut-status');
                 if (statusElem) {
                     if (volStatus === 'above' && rr >= 2.0) {
@@ -507,7 +565,6 @@
             }
         }
 
-        // CÁLCULOS NYSE CON FILTRO DE VOLUMEN
         function calculateNYSEMetrics() {
             const volStatus = document.getElementById('inp-nyse-vol') ? document.getElementById('inp-nyse-vol').value : 'above';
             const statusElem = document.getElementById('met-nyse-status');
@@ -522,7 +579,6 @@
             }
         }
 
-        // RENDERIZAR GRÁFICO TRADINGVIEW
         function renderTradingViewWidget(symbol) {
             document.getElementById('tradingview_widget_container').innerHTML = '';
 
@@ -554,8 +610,6 @@
             });
         }
 
-        // INICIALIZACIÓN DE LA TERMINAL
-        renderSubButtons();
         renderView();
     </script>
 </body>
