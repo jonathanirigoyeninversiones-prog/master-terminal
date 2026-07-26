@@ -34,424 +34,428 @@
         header h1 {
             font-size: 1.3rem;
             color: #f0b90b;
-            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         header p {
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: #848e9c;
             margin-top: 4px;
         }
-        /* NAVEGACIÓN PRINCIPAL (CRIPTO / ACCIONES) */
+        
+        /* Pestañas Principales */
         .main-tabs {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             margin-bottom: 12px;
+            background-color: #1e2329;
+            padding: 4px;
+            border-radius: 8px;
         }
-        .main-tab-btn {
+        .tab-btn {
             flex: 1;
-            background: #181a20;
+            padding: 10px;
+            background: transparent;
+            border: none;
             color: #848e9c;
-            border: 1px solid #2b313a;
-            padding: 12px;
-            font-size: 0.95rem;
             font-weight: bold;
-            border-radius: 6px;
+            font-size: 0.9rem;
             cursor: pointer;
+            border-radius: 6px;
             transition: all 0.2s ease;
-            text-align: center;
         }
-        .main-tab-btn.active {
-            background: #f0b90b;
-            color: #000;
-            border-color: #f0b90b;
+        .tab-btn.active {
+            background-color: #f0b90b;
+            color: #000000;
         }
-        /* SUB-NAVEGACIÓN */
-        .sub-controls {
+
+        /* Sub-Botones / Selectores de Activos */
+        .sub-nav {
             display: flex;
-            gap: 10px;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 8px;
             margin-bottom: 12px;
+            scrollbar-width: none;
+        }
+        .sub-nav::-webkit-scrollbar {
+            display: none;
         }
         .sub-btn {
-            flex: 1;
-            background: #1e2329;
-            color: #eaecef;
+            padding: 6px 12px;
+            background-color: #1e2329;
             border: 1px solid #2b313a;
-            padding: 9px;
-            font-size: 0.82rem;
-            font-weight: bold;
-            border-radius: 4px;
+            color: #eaecef;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            white-space: nowrap;
             cursor: pointer;
         }
         .sub-btn.active {
-            background: rgba(240, 185, 11, 0.2);
-            color: #f0b90b;
             border-color: #f0b90b;
+            color: #f0b90b;
+            background-color: rgba(240, 185, 11, 0.1);
         }
-        .refresh-btn {
-            background: #0ecb81;
-            color: #000;
-            border: none;
-            padding: 9px 16px;
-            font-size: 0.82rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        /* CALCULADORA DE GESTIÓN DE RIESGO DE CAPITAL */
-        .risk-calculator {
-            background: #12161c;
+
+        /* Tarjeta Contenedora Principal */
+        .card {
+            background-color: #181a20;
             border: 1px solid #2b313a;
-            border-radius: 6px;
-            padding: 12px 15px;
+            border-radius: 8px;
+            padding: 14px;
             margin-bottom: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
         }
-        .calc-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-        }
-        .calc-group label {
-            color: #848e9c;
-        }
-        .calc-input {
-            background: #000;
-            border: 1px solid #2b313a;
-            color: #f0b90b;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            width: 100px;
-            font-size: 0.85rem;
-        }
-        .risk-result {
-            font-size: 0.82rem;
-            color: #0ecb81;
-            font-weight: bold;
-            margin-left: auto;
-        }
-        /* SECCIÓN TEÓRICA / ESTRATEGIA */
-        .strategy-box {
-            background: #12161c;
-            border: 1px solid #2b313a;
-            border-radius: 6px;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-        }
-        .strategy-box h3 {
-            font-size: 0.92rem;
-            color: #f0b90b;
-            margin-bottom: 5px;
-        }
-        .strategy-box p {
-            font-size: 0.78rem;
-            color: #848e9c;
-            line-height: 1.4;
-        }
-        /* TABLAS Y CONTENEDORES */
-        .market-section {
-            background: #12161c;
-            border: 1px solid #2b313a;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-        .market-header {
-            padding: 10px 14px;
-            background: #181a20;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #f0b90b;
-            border-bottom: 1px solid #2b313a;
+        .card-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.78rem;
-            white-space: nowrap;
-        }
-        th, td {
-            padding: 9px 12px;
-            text-align: left;
-            border-bottom: 1px solid #2b313a;
-        }
-        th {
-            background: #181a20;
-            color: #848e9c;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        tr.clickable-row {
-            cursor: pointer;
-        }
-        tr.clickable-row:hover {
-            background: rgba(240, 185, 11, 0.12) !important;
-        }
-        .text-right { text-align: right; }
-        .badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
+        .card-title {
+            font-size: 1.1rem;
             font-weight: bold;
-            font-size: 0.7rem;
+            color: #ffffff;
         }
-        .badge-success { background: rgba(14, 203, 129, 0.2); color: #0ecb81; }
-        .badge-danger { background: rgba(246, 70, 93, 0.2); color: #f6465d; }
-        .badge-warning { background: rgba(240, 185, 11, 0.2); color: #f0b90b; }
+        .badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-spot { background-color: rgba(14, 203, 129, 0.2); color: #0ecb81; }
+        .badge-futures { background-color: rgba(246, 70, 93, 0.2); color: #f6465d; }
+        .badge-nyse { background-color: rgba(56, 97, 251, 0.2); color: #3861fb; }
 
-        #chart_section {
-            display: none;
-            width: 100vw;
-            height: 75vh;
-            background: #000000;
-            border-top: 2px solid #2b313a;
-            margin-top: 10px;
-            position: relative;
-            left: -10px;
+        /* Párrafo Explicativo de Estrategia */
+        .strategy-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #b7bdc6;
+            background-color: #0b0e11;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #f0b90b;
+            margin-bottom: 12px;
+        }
+
+        /* Formularios e Inputs */
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-group label {
+            font-size: 0.75rem;
+            color: #848e9c;
+        }
+        .input-group input, .input-group select {
+            background-color: #0b0e11;
+            border: 1px solid #2b313a;
+            color: #eaecef;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #f0b90b;
+        }
+
+        /* Panel de Resultados / Métricas */
+        .metrics-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            background-color: #0b0e11;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .metric-label {
+            font-size: 0.7rem;
+            color: #848e9c;
+        }
+        .metric-value {
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        .val-green { color: #0ecb81; }
+        .val-red { color: #f6465d; }
+        .val-gold { color: #f0b90b; }
+
+        /* Contenedor del Gráfico TradingView */
+        .chart-box {
+            height: 450px;
+            width: 100%;
+            background-color: #0b0e11;
+            border-radius: 8px;
+            border: 1px solid #2b313a;
+            overflow: hidden;
         }
     </style>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
     <div class="app-container">
         <header>
-            <h1>Master Terminal Cuantitativa - Socio Estratégico</h1>
-            <p>Protección Férrea de Capital + Ratio Riesgo/Beneficio ≥ 1:2 Innegociable</p>
+            <h1>MASTER TERMINAL DE INVERSIÓN</h1>
+            <p>Sistema Cuantitativo de Gestión de Capital y Análisis Bursátil</p>
         </header>
 
         <div class="main-tabs">
-            <div id="tab-cripto" class="main-tab-btn active" onclick="switchMainTab('cripto')">1. CRIPTO (Binance 24/7)</div>
-            <div id="tab-acciones" class="main-tab-btn" onclick="switchMainTab('acciones')">2. ACCIONES (Quantfury / NYSE)</div>
+            <button class="tab-btn active" onclick="setMainTab('spot')">Spot</button>
+            <button class="tab-btn" onclick="setMainTab('futuros')">Futuros</button>
+            <button class="tab-btn" onclick="setMainTab('nyse')">NYSE</button>
         </div>
 
-        <div class="sub-controls">
-            <div id="sub-buttons" class="sub-buttons" style="display:flex; gap:10px; flex:1;">
-                </div>
-            <button class="refresh-btn" onclick="refreshCurrentData()">Actualizar Datos</button>
+        <div class="sub-nav" id="sub-nav-container"></div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title" id="card-title-text">Cargando...</span>
+                <span class="badge" id="card-badge">SPOT</span>
+            </div>
+
+            <div class="strategy-text" id="strategy-explanation">
+                Cargando estrategia...
+            </div>
+
+            <div class="grid-inputs" id="inputs-container"></div>
+
+            <div class="metrics-panel" id="metrics-container"></div>
         </div>
 
-        <div class="risk-calculator">
-            <div class="calc-group">
-                <label for="capitalInput">Capital Total ($ USD):</label>
-                <input type="number" id="capitalInput" class="calc-input" value="1000" oninput="updateRiskCalc()">
-            </div>
-            <div class="calc-group">
-                <label for="riskPercentInput">% Riesgo x Operación:</label>
-                <input type="number" id="riskPercentInput" class="calc-input" value="2" step="0.5" min="0.5" max="5" oninput="updateRiskCalc()">
-            </div>
-            <div class="risk-result" id="riskResultText">
-                Riesgo Máximo por Operación: $20.00 USD (Stop Loss Blindado)
-            </div>
-        </div>
-
-        <div class="strategy-box">
-            <h3 id="strategy-title">Cargando Estrategia...</h3>
-            <p id="strategy-desc">Cargando parámetros...</p>
-        </div>
-
-        <div class="market-section">
-            <div class="market-header">
-                <span id="market-table-title">Activos Seleccionados</span>
-                <span style="font-size: 0.75rem; color: #848e9c;">Ratio Mínimo TP/SL = 2:1</span>
-            </div>
-            <div class="table-container">
-                <table id="mainTable">
-                    <thead id="mainThead"></thead>
-                    <tbody id="mainTbody">
-                        <tr><td colspan="8" style="text-align: center; padding: 20px;">Cargando mercado...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="chart_section">
-            <div id="tradingview_widget_container" style="width: 100%; height: 100%;"></div>
-        </div>
+        <div class="chart-box" id="tradingview_widget_container"></div>
     </div>
 
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-
     <script>
-        let currentMainTab = 'cripto';
-        let currentSubTab = 'futuros'; // Por defecto Futuros en Cripto
+        // ESTADO GLOBAL DE LA APLICACIÓN
+        let currentMainTab = 'spot'; // 'spot', 'futuros', 'nyse'
+        let currentSymbol = 'BINANCE:BTCUSDT';
 
-        // DATOS SIMULADOS BASE CRIPTO Y ACCIONES
-        const criptoData = [
-            { symbol: 'BTCUSDT', name: 'Bitcoin', price: 64250.00, change: '+2.4%', type: 'LONG', obZone: '$63,800 - $64,000', rsi: 41, status: 'GATILLO ACTIVO' },
-            { symbol: 'ETHUSDT', name: 'Ethereum', price: 3480.50, change: '-1.1%', type: 'SHORT', obZone: '$3,520 - $3,540', rsi: 62, status: 'EN ZONA OB' },
-            { symbol: 'SOLUSDT', name: 'Solana', price: 142.10, change: '+5.8%', type: 'LONG', obZone: '$138.50 - $140.00', rsi: 38, status: 'GATILLO ACTIVO' },
-            { symbol: 'BNBUSDT', name: 'Binance Coin', price: 575.20, change: '+0.8%', type: 'LONG', obZone: '$568.00 - $570.00', rsi: 45, status: 'ESPERANDO' }
-        ];
+        // LISTA DE ACTIVOS POR MERCADO
+        const assetsList = {
+            spot: [
+                { name: 'BTC / USDT', symbol: 'BINANCE:BTCUSDT' },
+                { name: 'ETH / USDT', symbol: 'BINANCE:ETHUSDT' },
+                { name: 'SOL / USDT', symbol: 'BINANCE:SOLUSDT' },
+                { name: 'BNB / USDT', symbol: 'BINANCE:BNBUSDT' }
+            ],
+            futuros: [
+                { name: 'BTC / USDT (Futuros)', symbol: 'BINANCE:BTCUSDT.P' },
+                { name: 'ETH / USDT (Futuros)', symbol: 'BINANCE:ETHUSDT.P' },
+                { name: 'SOL / USDT (Futuros)', symbol: 'BINANCE:SOLUSDT.P' }
+            ],
+            nyse: [
+                { name: 'SPY (S&P 500 ETF)', symbol: 'AMEX:SPY' },
+                { name: 'QQQ (Invesco QQQ)', symbol: 'NASDAQ:QQQ' },
+                { name: 'NVDA (NVIDIA)', symbol: 'NASDAQ:NVDA' },
+                { name: 'AAPL (Apple)', symbol: 'NASDAQ:AAPL' }
+            ]
+        };
 
-        const accionesData = [
-            { ticker: 'NVDA', name: 'NVIDIA Corp', price: 124.50, growth: '+122.4%', bullTrend: true, isExtended: false, rsi: 42 },
-            { ticker: 'AAPL', name: 'Apple Inc', price: 224.20, growth: '+10.5%', bullTrend: true, isExtended: false, rsi: 48 },
-            { ticker: 'MSFT', name: 'Microsoft Corp', price: 448.90, growth: '+15.2%', bullTrend: true, isExtended: false, rsi: 39 },
-            { ticker: 'GOOGL', name: 'Alphabet Inc', price: 177.80, growth: '+13.6%', bullTrend: true, isExtended: true, rsi: 72 },
-            { ticker: 'TSLA', name: 'Tesla Inc', price: 248.50, growth: '+11.2%', bullTrend: true, isExtended: true, rsi: 74 }
-        ];
-
-        function updateRiskCalc() {
-            const capital = parseFloat(document.getElementById('capitalInput').value) || 0;
-            const percent = parseFloat(document.getElementById('riskPercentInput').value) || 0;
-            const riskUSD = (capital * (percent / 100)).toFixed(2);
-            document.getElementById('riskResultText').innerText = `Riesgo Máximo por Operación: $${riskUSD} USD (Stop Loss Blindado)`;
-        }
-
-        function switchMainTab(tab) {
+        // CAMBIO DE PESTAÑA PRINCIPAL
+        function setMainTab(tab) {
             currentMainTab = tab;
-            document.getElementById('tab-cripto').classList.toggle('active', tab === 'cripto');
-            document.getElementById('tab-acciones').classList.toggle('active', tab === 'acciones');
             
-            if (tab === 'cripto') {
-                currentSubTab = 'futuros';
-            } else {
-                currentSubTab = 'pullback';
-            }
+            // Actualizar botones de pestaña
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase() === tab) btn.classList.add('active');
+            });
+
+            // Seleccionar primer activo por defecto
+            currentSymbol = assetsList[tab][0].symbol;
+
             renderSubButtons();
             renderView();
         }
 
-        function switchSubTab(sub) {
-            currentSubTab = sub;
-            renderSubButtons();
-            renderView();
-        }
-
+        // RENDERIZAR SUB-BOTONES (SELECCIÓN DE ACTIVO)
         function renderSubButtons() {
-            const container = document.getElementById('sub-buttons');
+            const container = document.getElementById('sub-nav-container');
             container.innerHTML = '';
 
-            if (currentMainTab === 'cripto') {
-                container.innerHTML = `
-                    <button class="sub-btn ${currentSubTab === 'futuros' ? 'active' : ''}" onclick="switchSubTab('futuros')">CRIPTO FUTUROS (Dual Long/Short)</button>
-                    <button class="sub-btn ${currentSubTab === 'spot' ? 'active' : ''}" onclick="switchSubTab('spot')">CRIPTO SPOT (Acumulación)</button>
-                `;
-            } else {
-                container.innerHTML = `
-                    <button class="sub-btn ${currentSubTab === 'pullback' ? 'active' : ''}" onclick="switchSubTab('pullback')">SETUP 1: PULLBACK (Descuento SMA50)</button>
-                    <button class="sub-btn ${currentSubTab === 'momentum' ? 'active' : ''}" onclick="switchSubTab('momentum')">SETUP 2: MOMENTUM (Rebote EMA20)</button>
-                `;
-            }
+            assetsList[currentMainTab].forEach(asset => {
+                const btn = document.createElement('button');
+                btn.className = `sub-btn ${asset.symbol === currentSymbol ? 'active' : ''}`;
+                btn.innerText = asset.name;
+                btn.onclick = () => {
+                    currentSymbol = asset.symbol;
+                    renderSubButtons();
+                    renderView();
+                };
+                container.appendChild(btn);
+            });
         }
 
+        // RENDERIZAR VISTA COMPLETA (TEXTO, CALCULADORA Y GRÁFICO)
         function renderView() {
-            document.getElementById('chart_section').style.display = 'none';
-            const title = document.getElementById('strategy-title');
-            const desc = document.getElementById('strategy-desc');
-            const thead = document.getElementById('mainThead');
-            const tbody = document.getElementById('mainTbody');
+            const titleElem = document.getElementById('card-title-text');
+            const badgeElem = document.getElementById('card-badge');
+            const stratElem = document.getElementById('strategy-explanation');
+            const inputsElem = document.getElementById('inputs-container');
+            const metricsElem = document.getElementById('metrics-container');
 
-            tbody.innerHTML = '';
+            if (currentMainTab === 'spot') {
+                titleElem.innerText = `Acumulación Spot - ${currentSymbol.split(':')[1] || currentSymbol}`;
+                badgeElem.innerText = "SPOT";
+                badgeElem.className = "badge badge-spot";
+                stratElem.innerHTML = "<strong>Estrategia Spot:</strong> Diseñada para la acumulación estratégica de activos de alta liquidez sin apalancamiento. En Spot no hace falta configurar Stop Loss ni Take Profit ya que adquirimos el activo real sin riesgo de liquidación. Las compras se ejecutan en zonas de soporte técnico e intervalos clave (1D/4H).";
 
-            if (currentMainTab === 'cripto') {
-                if (currentSubTab === 'futuros') {
-                    title.innerText = 'Estrategia Cripto Futuros: Order Blocks + FVG + RSI Dual (Long/Short)';
-                    desc.innerHTML = 'Operamos en ambas direcciones del mercado (15M, 1H, 4H). Buscamos entradas de precisión en **Order Blocks (OB)** con apoyo de **Fair Value Gaps (FVG)** y vacíos de liquidez. Stop Loss ajustado al nivel invalidador del OB y Take Profit siempre al 2:1.';
-                } else {
-                    title.innerText = 'Estrategia Cripto Spot: Acumulación Institucional en Zonas de Interés';
-                    desc.innerHTML = 'Compras de activos sólidos en soporte diario/4H. Sin apalancamiento, acumulando en zonas de descuento con RSI < 40.';
-                }
-
-                thead.innerHTML = `
-                    <tr>
-                        <th>Par Cripto ↕</th>
-                        <th class="text-right">Precio Actual ↕</th>
-                        <th class="text-right">24h ↕</th>
-                        <th>Dirección ↕</th>
-                        <th>Zona Order Block / FVG ↕</th>
-                        <th class="text-right">RSI (14) ↕</th>
-                        <th>Estado ↕</th>
-                        <th class="text-right">Take Profit (2:1) ↕</th>
-                    </tr>
+                // SIN SL ni TP
+                inputsElem.innerHTML = `
+                    <div class="input-group">
+                        <label>Capital Asignado ($ USD):</label>
+                        <input type="number" id="inp-capital" value="1000" oninput="calculateSpotMetrics()">
+                    </div>
+                    <div class="input-group">
+                        <label>Precio Compra Spot ($):</label>
+                        <input type="number" id="inp-price" value="65000" oninput="calculateSpotMetrics()">
+                    </div>
                 `;
 
-                criptoData.forEach(c => {
-                    const tp = c.type === 'LONG' ? (c.price * 1.04).toFixed(2) : (c.price * 0.96).toFixed(2);
-                    const row = document.createElement('tr');
-                    row.className = 'clickable-row';
-                    row.onclick = () => loadChart(`BINANCE:${c.symbol}`);
-                    row.innerHTML = `
-                        <td><strong>${c.symbol}</strong> <span style="color:#848e9c; font-size:0.7rem;">(${c.name})</span></td>
-                        <td class="text-right">$${c.price.toFixed(2)}</td>
-                        <td class="text-right" style="color:${c.change.startsWith('+') ? '#0ecb81':'#f6465d'}">${c.change}</td>
-                        <td><span class="badge ${c.type === 'LONG' ? 'badge-success':'badge-danger'}">${c.type}</span></td>
-                        <td><span style="color:#f0b90b;">${c.obZone}</span></td>
-                        <td class="text-right">${c.rsi}</td>
-                        <td><span class="badge badge-warning">${c.status}</span></td>
-                        <td class="text-right" style="color:#0ecb81; font-weight:bold;">$${tp}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
+                metricsElem.innerHTML = `
+                    <div class="metric-item">
+                        <span class="metric-label">Unidades Adquiridas:</span>
+                        <span class="metric-value val-green" id="met-units">0.00</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Riesgo de Liquidación:</span>
+                        <span class="metric-value val-green">0% (Ninguno)</span>
+                    </div>
+                `;
+                calculateSpotMetrics();
 
-            } else {
-                if (currentSubTab === 'pullback') {
-                    title.innerText = 'Estrategia Quant Growth: Pullback / Descuento Ideal (NYSE)';
-                    desc.innerHTML = 'Filtramos empresas con `Ventas Growth > 10%` y tendencia alcista `Precio > SMA200`. Buscamos entradas cuando el precio descansa cerca de la **SMA50** con RSI neutral/bajo (35-45).';
-                } else {
-                    title.innerText = 'Estrategia Quant Growth: Rebote / Momentum (NYSE)';
-                    desc.innerHTML = 'Captura de impulsos de continuación apoyados en la **EMA20** y confluencia de volumen creciente. Prohibido comprar si el activo está extendido.';
-                }
+            } else if (currentMainTab === 'futuros') {
+                titleElem.innerText = `Futuros Binance - ${currentSymbol.split(':')[1] || currentSymbol}`;
+                badgeElem.innerText = "FUTUROS";
+                badgeElem.className = "badge badge-futures";
+                stratElem.innerHTML = "<strong>Estrategia Futuros (BTC/USDT) con Filtro de Volumen:</strong> Operativa en Margen Aislado con apalancamiento controlado de 3x a 5x. <strong>Uso de Stop Loss (SL) y Take Profit (TP) en ratio mínimo 2:1 obligatorio</strong>. <br><em>Filtro Cuantitativo de Volumen:</em> Toda entrada en zona de Order Block debe ser confirmada por una barra de <strong>Volumen Clímax</strong> (superior a la media de 20 periodos) y ausencia de divergencias bajistas de volumen para evitar trampas de liquidez.";
 
-                thead.innerHTML = `
-                    <tr>
-                        <th>Ticker / Empresa ↕</th>
-                        <th class="text-right">Precio ↕</th>
-                        <th class="text-right">Ventas Growth ↕</th>
-                        <th>Tendencia (SMA200) ↕</th>
-                        <th>Filtro Extensión ↕</th>
-                        <th class="text-right">Entrada Ideal ↕</th>
-                        <th class="text-right">Stop Loss (SMA50) ↕</th>
-                        <th class="text-right">Take Profit (≥ 1:2) ↕</th>
-                    </tr>
+                // CON SL Y TP
+                inputsElem.innerHTML = `
+                    <div class="input-group">
+                        <label>Balance Cuenta ($):</label>
+                        <input type="number" id="inp-fut-bal" value="5000" oninput="calculateFuturesMetrics()">
+                    </div>
+                    <div class="input-group">
+                        <label>Riesgo Máximo (%):</label>
+                        <input type="number" id="inp-fut-risk" value="1.5" step="0.1" oninput="calculateFuturesMetrics()">
+                    </div>
+                    <div class="input-group">
+                        <label>Precio Entrada ($):</label>
+                        <input type="number" id="inp-fut-entry" value="65000" oninput="calculateFuturesMetrics()">
+                    </div>
+                    <div class="input-group">
+                        <label>Stop Loss - SL ($):</label>
+                        <input type="number" id="inp-fut-sl" value="64000" oninput="calculateFuturesMetrics()">
+                    </div>
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Take Profit - TP ($):</label>
+                        <input type="number" id="inp-fut-tp" value="67000" oninput="calculateFuturesMetrics()">
+                    </div>
                 `;
 
-                accionesData.forEach(a => {
-                    const entry = (a.price * (currentSubTab === 'pullback' ? 0.985 : 1.005)).toFixed(2);
-                    const sl = (entry * 0.965).toFixed(2);
-                    const risk = entry - sl;
-                    const tp = (parseFloat(entry) + (risk * 2.1)).toFixed(2);
+                metricsElem.innerHTML = `
+                    <div class="metric-item">
+                        <span class="metric-label">Pérdida Máx (SL):</span>
+                        <span class="metric-value val-red" id="met-fut-loss">-$0.00</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Ganancia Est. (TP):</span>
+                        <span class="metric-value val-green" id="met-fut-profit">+$0.00</span>
+                    </div>
+                    <div class="metric-item" style="grid-column: span 2;">
+                        <span class="metric-label">Ratio Riesgo / Beneficio (R/R):</span>
+                        <span class="metric-value val-gold" id="met-fut-rr">0.00 : 1</span>
+                    </div>
+                `;
+                calculateFuturesMetrics();
 
-                    const extendedBadge = a.isExtended ? 
-                        '<span class="badge badge-danger">EXTENDIDO (NO COMPRAR)</span>' : 
-                        '<span class="badge badge-success">SANO (VALIDO)</span>';
+            } else if (currentMainTab === 'nyse') {
+                titleElem.innerText = `Bolsa de Nueva York - ${currentSymbol}`;
+                badgeElem.innerText = "NYSE";
+                badgeElem.className = "badge badge-nyse";
+                stratElem.innerHTML = "<strong>Estrategia NYSE / Renta Variable:</strong> Análisis macroestructural en temporalidad Diaria (1D) para evaluar bloques de órdenes institucionales y vacuidades de liquidez en las principales acciones y ETFs globales.";
 
-                    const row = document.createElement('tr');
-                    row.className = 'clickable-row';
-                    row.onclick = () => loadChart(`NASDAQ:${a.ticker}`);
-                    row.innerHTML = `
-                        <td><strong>${a.ticker}</strong> <span style="color:#848e9c; font-size:0.7rem;">(${a.name})</span></td>
-                        <td class="text-right">$${a.price.toFixed(2)}</td>
-                        <td class="text-right" style="color:#0ecb81; font-weight:bold;">${a.growth}</td>
-                        <td><span class="badge badge-success">ALCISTA (> SMA200)</span></td>
-                        <td>${extendedBadge}</td>
-                        <td class="text-right">$${entry}</td>
-                        <td class="text-right" style="color:#f6465d;">$${sl}</td>
-                        <td class="text-right" style="color:#0ecb81; font-weight:bold;">$${tp}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
+                inputsElem.innerHTML = `
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Mercado NYSE Seleccionado:</label>
+                        <input type="text" value="${currentSymbol}" readonly style="color: #f0b90b; font-weight: bold;">
+                    </div>
+                `;
+
+                metricsElem.innerHTML = `
+                    <div class="metric-item" style="grid-column: span 2;">
+                        <span class="metric-label">Temporalidad de Análisis:</span>
+                        <span class="metric-value val-gold">1D (Diario) / 4H (Intradía)</span>
+                    </div>
+                `;
+            }
+
+            renderTradingViewWidget(currentSymbol);
+        }
+
+        // CÁLCULOS SPOT
+        function calculateSpotMetrics() {
+            const capital = parseFloat(document.getElementById('inp-capital').value) || 0;
+            const price = parseFloat(document.getElementById('inp-price').value) || 1;
+            const units = capital / price;
+            
+            const symbolClean = currentSymbol.split(':')[1] ? currentSymbol.split(':')[1].replace('USDT', '') : 'UNID';
+            document.getElementById('met-units').innerText = `${units.toFixed(5)} ${symbolClean}`;
+        }
+
+        // CÁLCULOS FUTUROS
+        function calculateFuturesMetrics() {
+            const balance = parseFloat(document.getElementById('inp-fut-bal').value) || 0;
+            const riskPct = parseFloat(document.getElementById('inp-fut-risk').value) || 0;
+            const entry = parseFloat(document.getElementById('inp-fut-entry').value) || 1;
+            const sl = parseFloat(document.getElementById('inp-fut-sl').value) || 1;
+            const tp = parseFloat(document.getElementById('inp-fut-tp').value) || 1;
+
+            const maxLoss = balance * (riskPct / 100);
+            const distSL = Math.abs(entry - sl);
+            const distTP = Math.abs(tp - entry);
+
+            if (distSL > 0) {
+                const units = maxLoss / distSL;
+                const profit = units * distTP;
+                const rr = distTP / distSL;
+
+                document.getElementById('met-fut-loss').innerText = `-$${maxLoss.toFixed(2)}`;
+                document.getElementById('met-fut-profit').innerText = `+$${profit.toFixed(2)}`;
+                
+                const rrElem = document.getElementById('met-fut-rr');
+                rrElem.innerText = `${rr.toFixed(2)} : 1`;
+                if (rr < 2.0) {
+                    rrElem.className = "metric-value val-red";
+                } else {
+                    rrElem.className = "metric-value val-green";
+                }
             }
         }
 
-        function loadChart(symbol) {
-            const chartSection = document.getElementById('chart_section');
-            chartSection.style.display = 'block';
+        // RENDERIZAR GRÁFICO TRADINGVIEW
+        function renderTradingViewWidget(symbol) {
             document.getElementById('tradingview_widget_container').innerHTML = '';
 
             new TradingView.widget({
                 "autosize": true,
                 "symbol": symbol,
-                "interval": currentMainTab === 'cripto' ? "60" : "D",
+                "interval": currentMainTab === 'nyse' ? "D" : "60",
                 "timezone": "Etc/UTC",
                 "theme": "dark",
                 "style": "1",
@@ -474,18 +478,11 @@
                     "paneProperties.horzGridProperties.color": "#121212"
                 }
             });
-
-            chartSection.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function refreshCurrentData() {
-            renderView();
         }
 
         // INICIALIZACIÓN DE LA TERMINAL
         renderSubButtons();
         renderView();
-        updateRiskCalc();
     </script>
 </body>
 </html>
